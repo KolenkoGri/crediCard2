@@ -13,6 +13,9 @@ const lightcolor = document.querySelectorAll('.lightcolor');
 const darkcolor = document.querySelectorAll('.darkcolor');
 const creditcard = document.querySelector('.creditcard');
 const ccsingle = document.getElementById('ccsingle');
+
+const regExpNumber = /[^0-9]/gi;
+const regExpWords = /[^a-z ]/gi;
 // Что-бы перевернуть карту используйте класс flipped для элемента с классом creditcard
 
 // данные для определения типа карты
@@ -103,8 +106,6 @@ const mask = [{
 
 // смена цвета у карточки
 const swapColor = (color) => {
-  console.log(typeof color, color);
-  console.log(lightcolor, darkcolor);
   lightcolor.forEach((input) => {
     input.classList.value = `lightcolor ${color}`;
   });
@@ -115,6 +116,8 @@ const swapColor = (color) => {
 
 
 userName.addEventListener('input', () => {
+  // regExpNumber
+  userName.value = userName.value.replace(regExpWords, '');
   svgname.textContent = userName.value;
   svgnameback.textContent = userName.value;
   if(userName.value.length === 0) {
@@ -142,13 +145,16 @@ const testExamination = (value) => {
 }
 
 cardnumber.addEventListener('input', () => {
-  testExamination(cardnumber.value);
+  cardnumber.value = cardnumber.value.replace(regExpNumber, '');
   svgnumber.textContent = cardnumber.value;
+  testExamination(cardnumber.value);
+
   if(cardnumber.value.length === 0) {
     svgnumber.textContent = '0123 4567 8910 1112';
   }
 });
 expirationdate.addEventListener('input', () => {
+  expirationdate.value = expirationdate.value.replace(/[^0-9/]/gi, '');
   svgexpire.textContent = expirationdate.value;
   if(expirationdate.value.length === 0) {
     svgexpire.textContent = '01/23';
@@ -163,6 +169,7 @@ securitycode.addEventListener('focus', () => {
   }
 })
 securitycode.addEventListener('input', () => {
+    securitycode.value = securitycode.value.replace(regExpNumber, '');
     svgsecurity.textContent = securitycode.value;
     if(securitycode.value.length === 0) {
       svgsecurity.textContent = '985';
